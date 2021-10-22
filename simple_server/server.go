@@ -15,6 +15,13 @@ type HelloService struct {
 func (s *HelloService) SayHello(ctx context.Context, req *proto.HelloRequest) (*proto.HelloReply, error) {
 
 	fmt.Println(req.Name)
+	fmt.Println(req.GenTime)
+	fmt.Println(req.Infomation.Info)
+	fmt.Println(req.Gender)
+	fmt.Println(req.Dune["name"])
+	for _, k := range req.Cast {
+		fmt.Println(k)
+	}
 	reply := &proto.HelloReply{
 		Message: "hahah:" + req.Name,
 	}
