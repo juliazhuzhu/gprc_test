@@ -2,11 +2,12 @@ package main
 
 import "github.com/gin-gonic/gin"
 
-func main()  {
+func main() {
 	r := gin.Default()
-	r.GET("/ping", func (c *gin.Context){
+	//we can also gin.New(). Default() use logger, and recover
+	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message" : "pong",
+			"message": "pong",
 		})
 	})
 
