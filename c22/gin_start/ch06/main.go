@@ -36,13 +36,12 @@ func returnProtoc(c *gin.Context) {
 
 func moreJSON(c *gin.Context) {
 
-	type JSON_Info struct {
+	var msg struct {
 		Name    string `json:"user"`
 		Message string
 		Number  int
 	}
-
-	var msg JSON_Info
+	
 	msg.Name = "xiaoye"
 	msg.Message = "this is a test"
 	msg.Number = 20
