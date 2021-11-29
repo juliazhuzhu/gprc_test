@@ -28,11 +28,11 @@ func main() {
 	router := gin.Default()
 	//router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
-	router.Use(MyLogger())
+	router.Use(TokenRequired())
 
 	auth := router.Group("/auth")
 	{
-		auth.Use(MyAuth())
+		auth.Use(DummyFunction())
 		auth.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"msg": "pong",
@@ -45,10 +45,32 @@ func main() {
 
 }
 
-func MyAuth() gin.HandlerFunc {
-	return AuthRequired
+func DummyFunction() gin.HandlerFunc {
+	return Dummy
 }
 
-func AuthRequired(c *gin.Context) {
-	fmt.Println("AuthRequired")
+func Dummy(c *gin.Context) {
+	fmt.Println("Dummy")
+}
+
+func TokenRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var token string
+		for k, v := range c.Request.Header {
+			if k == "X-Token" {
+				token = v[0]
+			}
+		}
+
+		if token != "bobby" {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"msg": "unauthed",
+			})
+
+			//return, CAN NOT be used here. c.Abort() instead!!!
+			c.Abort()
+		}
+
+		c.Next()
+	}
 }
